@@ -1,24 +1,101 @@
-# Compiled class file
-*.class
+# ============================================================
+# 🧠 Global Ignore Rules (for OS / IDEs)
+# ============================================================
 
-# Log file
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Logs
 *.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# BlueJ files
-*.ctxt
+# IDEs / Editors
+.idea/
+.vscode/
+*.iml
+*.class
+*.swp
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# ============================================================
+# ⚛️ React Frontend (root folder)
+# ============================================================
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# Node modules
+node_modules/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# Build output
+build/
+dist/
+.temp/
+.cache/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Others
+*.tgz
+package-lock.json
+yarn.lock
+
+# ============================================================
+# ☕ Spring Boot Server (server/ folder)
+# ============================================================
+
+# Maven / Gradle builds
+server/target/
+server/.mvn/
+server/mvnw
+server/mvnw.cmd
+
+# Spring Boot config
+server/src/main/resources/application-*.yml
+server/src/main/resources/application-*.properties
+
+# Logs
+server/*.log
+server/logs/
+
+# IDE / Build
+server/.classpath
+server/.project
+server/.settings/
+server/.idea/
+server/.vscode/
+
+# OS junk inside server
+server/*.DS_Store
+server/*Thumbs.db
+
+# ============================================================
+# 🧰 Misc
+# ============================================================
+
+# Backup / temp files
+*.bak
+*.tmp
+*.temp
+*.orig
+*.old
+
+# npm / yarn lock (optional, uncomment if you want to exclude)
+# package-lock.json
+# yarn.lock

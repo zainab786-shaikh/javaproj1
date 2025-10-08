@@ -1,0 +1,5 @@
+{
+  "name": "React Expense Tracker",
+  "description": "A modern, responsive expense tracker application built with React and Tailwind CSS. It allows users to add, view, filter, sort, and search their expenses with a clean and intuitive interface.",
+  "requestFramePermissions": []
+}
