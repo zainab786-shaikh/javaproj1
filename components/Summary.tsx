@@ -13,7 +13,7 @@ const Summary: React.FC<SummaryProps> = ({ expenses }) => {
 
     const formattedTotal = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'INR',
     }).format(total);
 
     return (

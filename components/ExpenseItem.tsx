@@ -19,7 +19,7 @@ const categoryColorMap: Record<Category, string> = {
 const ExpenseItem: React.FC<ExpenseItemProps> = ({ expense, onDelete }) => {
     const formattedAmount = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'INR',
     }).format(expense.amount);
     
     const formattedDate = new Date(expense.date + 'T00:00:00').toLocaleDateString('en-US', {
