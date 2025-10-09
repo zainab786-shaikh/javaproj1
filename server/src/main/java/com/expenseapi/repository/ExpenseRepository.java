@@ -1,6 +1,6 @@
-package com.example.expenseapi.repository;
+package com.expenseapi.repository;
 
-import com.example.expenseapi.model.Expense;
+import com.expenseapi.model.Expense;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.example.expenseapi.model;
+package com.expenseapi.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;

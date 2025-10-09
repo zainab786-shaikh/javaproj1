@@ -1,7 +1,7 @@
-package com.example.expenseapi.service;
+package com.expenseapi.service;
 
-import com.example.expenseapi.model.Expense;
-import com.example.expenseapi.repository.ExpenseRepository;
+import com.expenseapi.model.Expense;
+import com.expenseapi.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

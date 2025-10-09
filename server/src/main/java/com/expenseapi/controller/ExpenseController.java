@@ -1,7 +1,7 @@
-package com.example.expenseapi.controller;
+package com.expenseapi.controller;
 
-import com.example.expenseapi.model.Expense;
-import com.example.expenseapi.service.ExpenseService;
+import com.expenseapi.model.Expense;
+import com.expenseapi.service.ExpenseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

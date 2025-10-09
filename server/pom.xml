@@ -13,7 +13,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.example</groupId>
+    <groupId>com</groupId>
     <artifactId>expense-api</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
