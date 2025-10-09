@@ -38,12 +38,34 @@ const App: React.FC = () => {
         fetchExpenses();
     }, []);
 
+    const mapCategoryToServer = (category: Category): string => {
+        switch (category) {
+            case Category.Groceries:
+            return 'FOOD';
+            case Category.Transport:
+            return 'TRAVEL';
+            case Category.Utilities:
+            return 'UTILITIES';
+            case Category.Entertainment:
+            return 'ENTERTAINMENT';
+            case Category.Health:
+            return 'OTHER';
+            case Category.Other:
+            return 'OTHER';
+            default:
+            return 'OTHER';
+        }
+    };
+
     const addExpense = useCallback(async (expense: Omit<Expense, 'id'>) => {
         try {
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(expense),
+                body: JSON.stringify({
+                    ...expense,
+                    category: mapCategoryToServer(expense.category),
+                }),
             });
             if (!response.ok) {
                 throw new Error('Failed to add expense.');
