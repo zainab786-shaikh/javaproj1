@@ -45,43 +45,40 @@ const App = () => {
     }, []);
 
     const mapServerToCategory = (serverCategory) => {
-        switch (serverCategory) {
-            case 'GROCERIES':
-            case 'FOOD':
-                return Category.Groceries;
-            case 'TRANSPORT':
-            case 'TRAVEL':
-                return Category.Transport;
-            case 'UTILITIES':
-                return Category.Utilities;
-            case 'ENTERTAINMENT':
-                return Category.Entertainment;
-            case 'HEALTH':
-                return Category.Health;
-            case 'OTHER':
-            default:
-                return Category.Other;
-        }
-    };
+    if (!serverCategory) return Category.Other;
+    const cat = serverCategory.trim().toUpperCase();
+    switch (cat) {
+        case 'GROCERIES':
+        case 'FOOD':
+            return Category.Groceries;
+        case 'TRANSPORT':
+        case 'TRAVEL':
+            return Category.Transport;
+        case 'UTILITIES':
+            return Category.Utilities;
+        case 'ENTERTAINMENT':
+            return Category.Entertainment;
+        case 'HEALTH':
+            return Category.Health;
+        case 'OTHER':
+        default:
+            return Category.Other;
+    }
+};
+
 
     const mapCategoryToServer = (category) => {
-        switch (category) {
-            case Category.Groceries:
-                return 'FOOD';
-            case Category.Transport:
-                return 'TRAVEL';
-            case Category.Utilities:
-                return 'UTILITIES';
-            case Category.Entertainment:
-                return 'ENTERTAINMENT';
-            case Category.Health:
-                return 'HEALTH';
-            case Category.Other:
-                return 'OTHER';
-            default:
-                return 'OTHER';
-        }
-    };
+    switch (category) {
+        case 'Groceries': return 'FOOD';
+        case 'Transport': return 'TRAVEL';
+        case 'Utilities': return 'UTILITIES';
+        case 'Entertainment': return 'ENTERTAINMENT';
+        case 'Health': return 'HEALTH';
+        case 'Other': return 'OTHER';
+        default: return 'OTHER';
+    }
+};
+
 
     const addExpense = useCallback(async (expense) => {
         try {
@@ -137,8 +134,10 @@ const App = () => {
         }
 
         if (filterCategory) {
-            filtered = filtered.filter(expense => expense.category === filterCategory);
-        }
+    filtered = filtered.filter(
+        expense => expense.category.toLowerCase() === filterCategory.toLowerCase()
+    );
+}
         
         if (sortConfig.key) {
             filtered.sort((a, b) => {

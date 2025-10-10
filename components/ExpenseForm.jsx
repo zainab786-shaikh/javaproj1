@@ -65,7 +65,7 @@ const ExpenseForm = ({ onAddExpense }) => {
                 </div>
                 <div>
                     <label htmlFor="category" className="block text-sm font-medium text-slate-600">Category</label>
-                    <select
+                    {/* <select
                         id="category"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
@@ -74,7 +74,19 @@ const ExpenseForm = ({ onAddExpense }) => {
                         {Object.values(Category).map(cat => (
                             <option key={cat} value={cat}>{cat}</option>
                         ))}
-                    </select>
+                    </select> */}
+                    <select
+                        id="category"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                        >
+                        {Object.values(Category).map(cat => (
+                            <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                        </select>
+
+
                 </div>
                 <div>
                     <label htmlFor="date" className="block text-sm font-medium text-slate-600">Date</label>
