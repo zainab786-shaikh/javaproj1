@@ -26,7 +26,14 @@ const App = () => {
                     throw new Error(`API Error: ${response.statusText}`);
                 }
                 const data = await response.json();
-                setExpenses(data);
+
+                // ✅ Convert server-side category values to frontend ones
+                const mappedData = data.map(exp => ({
+                    ...exp,
+                    category: mapServerToCategory(exp.category),
+                }));
+
+                setExpenses(mappedData); // ✅ use mappedData only
             } catch (err) {
                 setApiError(err.message || 'Failed to fetch expenses. Make sure the API server is running.');
             } finally {
@@ -36,6 +43,26 @@ const App = () => {
 
         fetchExpenses();
     }, []);
+
+    const mapServerToCategory = (serverCategory) => {
+        switch (serverCategory) {
+            case 'GROCERIES':
+            case 'FOOD':
+                return Category.Groceries;
+            case 'TRANSPORT':
+            case 'TRAVEL':
+                return Category.Transport;
+            case 'UTILITIES':
+                return Category.Utilities;
+            case 'ENTERTAINMENT':
+                return Category.Entertainment;
+            case 'HEALTH':
+                return Category.Health;
+            case 'OTHER':
+            default:
+                return Category.Other;
+        }
+    };
 
     const mapCategoryToServer = (category) => {
         switch (category) {
@@ -48,7 +75,7 @@ const App = () => {
             case Category.Entertainment:
                 return 'ENTERTAINMENT';
             case Category.Health:
-                return 'OTHER';
+                return 'HEALTH';
             case Category.Other:
                 return 'OTHER';
             default:
@@ -63,19 +90,27 @@ const App = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...expense,
-                    category: mapCategoryToServer(expense.category),
+                    category: mapCategoryToServer(expense.category), // frontend -> backend
                 }),
             });
-            if (!response.ok) {
-                throw new Error('Failed to add expense.');
-            }
-            const newExpense = await response.json();
-            setExpenses(prevExpenses => [newExpense, ...prevExpenses]);
+            if (!response.ok) throw new Error('Failed to add expense.');
+
+            let newExpense = await response.json();
+
+            // ✅ Map backend category to frontend
+            newExpense = {
+                ...newExpense,
+                category: mapServerToCategory(newExpense.category),
+            };
+
+            setExpenses(prev => [newExpense, ...prev]);
         } catch (error) {
-            console.error('Error adding expense:', error);
+            console.error(error);
             setApiError('Could not save the new expense. Please try again.');
         }
     }, []);
+
+
 
     const deleteExpense = useCallback(async (id) => {
         try {

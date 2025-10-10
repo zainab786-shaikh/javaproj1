@@ -52,6 +52,7 @@ const FilterControls = ({
                 </select>
             </div>
 
+
             <div className="lg:col-span-1 flex items-center justify-start sm:justify-end space-x-2">
                 <span className="text-sm font-medium text-slate-600">Sort by:</span>
                 {sortOptions.map(option => (
