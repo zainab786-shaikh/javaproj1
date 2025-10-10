@@ -1,6 +1,5 @@
-
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { Expense, Category, SortConfig } from './types';
+import { Category } from './types';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
 import FilterControls from './components/FilterControls';
@@ -8,14 +7,14 @@ import Summary from './components/Summary';
 
 const API_URL = 'http://localhost:8080/api/expenses';
 
-const App: React.FC = () => {
-    const [expenses, setExpenses] = useState<Expense[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [apiError, setApiError] = useState<string | null>(null);
+const App = () => {
+    const [expenses, setExpenses] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [apiError, setApiError] = useState(null);
     
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterCategory, setFilterCategory] = useState<Category | ''>('');
-    const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'date', direction: 'descending' });
+    const [filterCategory, setFilterCategory] = useState('');
+    const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'descending' });
 
     useEffect(() => {
         const fetchExpenses = async () => {
@@ -26,9 +25,9 @@ const App: React.FC = () => {
                 if (!response.ok) {
                     throw new Error(`API Error: ${response.statusText}`);
                 }
-                const data: Expense[] = await response.json();
+                const data = await response.json();
                 setExpenses(data);
-            } catch (err: any) {
+            } catch (err) {
                 setApiError(err.message || 'Failed to fetch expenses. Make sure the API server is running.');
             } finally {
                 setIsLoading(false);
@@ -38,26 +37,26 @@ const App: React.FC = () => {
         fetchExpenses();
     }, []);
 
-    const mapCategoryToServer = (category: Category): string => {
+    const mapCategoryToServer = (category) => {
         switch (category) {
             case Category.Groceries:
-            return 'FOOD';
+                return 'FOOD';
             case Category.Transport:
-            return 'TRAVEL';
+                return 'TRAVEL';
             case Category.Utilities:
-            return 'UTILITIES';
+                return 'UTILITIES';
             case Category.Entertainment:
-            return 'ENTERTAINMENT';
+                return 'ENTERTAINMENT';
             case Category.Health:
-            return 'OTHER';
+                return 'OTHER';
             case Category.Other:
-            return 'OTHER';
+                return 'OTHER';
             default:
-            return 'OTHER';
+                return 'OTHER';
         }
     };
 
-    const addExpense = useCallback(async (expense: Omit<Expense, 'id'>) => {
+    const addExpense = useCallback(async (expense) => {
         try {
             const response = await fetch(API_URL, {
                 method: 'POST',
@@ -70,7 +69,7 @@ const App: React.FC = () => {
             if (!response.ok) {
                 throw new Error('Failed to add expense.');
             }
-            const newExpense: Expense = await response.json();
+            const newExpense = await response.json();
             setExpenses(prevExpenses => [newExpense, ...prevExpenses]);
         } catch (error) {
             console.error('Error adding expense:', error);
@@ -78,7 +77,7 @@ const App: React.FC = () => {
         }
     }, []);
 
-    const deleteExpense = useCallback(async (id: number) => {
+    const deleteExpense = useCallback(async (id) => {
         try {
             const response = await fetch(`${API_URL}/${id}`, {
                 method: 'DELETE',
@@ -108,8 +107,8 @@ const App: React.FC = () => {
         
         if (sortConfig.key) {
             filtered.sort((a, b) => {
-                const aValue = a[sortConfig.key as keyof Expense];
-                const bValue = b[sortConfig.key as keyof Expense];
+                const aValue = a[sortConfig.key];
+                const bValue = b[sortConfig.key];
                 
                 if (aValue < bValue) {
                     return sortConfig.direction === 'ascending' ? -1 : 1;

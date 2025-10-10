@@ -1,19 +1,14 @@
-
 import React, { useState } from 'react';
-import { Expense, Category } from '../types';
+import { Category } from '../types';
 
-interface ExpenseFormProps {
-    onAddExpense: (expense: Omit<Expense, 'id'>) => void;
-}
-
-const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAddExpense }) => {
+const ExpenseForm = ({ onAddExpense }) => {
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState<Category>(Category.Groceries);
+    const [category, setCategory] = useState(Category.Groceries);
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         if (!description || !amount || !date) {
             setError('All fields are required.');
@@ -73,7 +68,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onAddExpense }) => {
                     <select
                         id="category"
                         value={category}
-                        onChange={(e) => setCategory(e.target.value as Category)}
+                        onChange={(e) => setCategory(e.target.value)}
                         className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                     >
                         {Object.values(Category).map(cat => (

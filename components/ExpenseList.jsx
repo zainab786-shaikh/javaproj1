@@ -1,14 +1,7 @@
-
 import React from 'react';
-import { Expense } from '../types';
 import ExpenseItem from './ExpenseItem';
 
-interface ExpenseListProps {
-    expenses: Expense[];
-    onDeleteExpense: (id: number) => void;
-}
-
-const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDeleteExpense }) => {
+const ExpenseList = ({ expenses, onDeleteExpense }) => {
     if (expenses.length === 0) {
         return <p className="text-center text-slate-500 mt-8">No expenses found. Try adjusting your filters or adding a new expense!</p>;
     }

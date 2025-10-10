@@ -1,23 +1,13 @@
-
 import React from 'react';
-import { Category, SortConfig, Expense } from '../types';
+import { Category } from '../types';
 
-interface FilterControlsProps {
-    searchTerm: string;
-    setSearchTerm: (term: string) => void;
-    filterCategory: Category | '';
-    setFilterCategory: (category: Category | '') => void;
-    sortConfig: SortConfig;
-    setSortConfig: (config: SortConfig) => void;
-}
-
-const sortOptions: { label: string; value: keyof Expense | '' }[] = [
+const sortOptions = [
     { label: 'Date', value: 'date' },
     { label: 'Amount', value: 'amount' },
     { label: 'Description', value: 'description' },
 ];
 
-const FilterControls: React.FC<FilterControlsProps> = ({
+const FilterControls = ({
     searchTerm,
     setSearchTerm,
     filterCategory,
@@ -25,9 +15,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({
     sortConfig,
     setSortConfig,
 }) => {
-
-    const handleSortChange = (key: keyof Expense | '') => {
-        let direction: 'ascending' | 'descending' = 'ascending';
+    const handleSortChange = (key) => {
+        let direction = 'ascending';
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
             direction = 'descending';
         }
@@ -53,7 +42,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({
                 <select
                     id="category-filter"
                     value={filterCategory}
-                    onChange={(e) => setFilterCategory(e.target.value as Category | '')}
+                    onChange={(e) => setFilterCategory(e.target.value)}
                     className="block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                 >
                     <option value="">All Categories</option>
@@ -64,7 +53,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({
             </div>
 
             <div className="lg:col-span-1 flex items-center justify-start sm:justify-end space-x-2">
-                 <span className="text-sm font-medium text-slate-600">Sort by:</span>
+                <span className="text-sm font-medium text-slate-600">Sort by:</span>
                 {sortOptions.map(option => (
                     <button
                         key={option.value}
@@ -72,7 +61,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({
                         className={`px-3 py-1.5 text-sm rounded-md transition-colors ${sortConfig.key === option.value ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
                     >
                         {option.label}
-                         {sortConfig.key === option.value && (
+                        {sortConfig.key === option.value && (
                             <span className="ml-1">{sortConfig.direction === 'ascending' ? '↑' : '↓'}</span>
                         )}
                     </button>

@@ -1,12 +1,6 @@
-
 import React, { useMemo } from 'react';
-import { Expense } from '../types';
 
-interface SummaryProps {
-    expenses: Expense[];
-}
-
-const Summary: React.FC<SummaryProps> = ({ expenses }) => {
+const Summary = ({ expenses }) => {
     const total = useMemo(() => {
         return expenses.reduce((acc, expense) => acc + expense.amount, 0);
     }, [expenses]);

@@ -1,13 +1,7 @@
-
 import React from 'react';
-import { Expense, Category } from '../types';
+import { Category } from '../types';
 
-interface ExpenseItemProps {
-    expense: Expense;
-    onDelete: (id: number) => void;
-}
-
-const categoryColorMap: Record<Category, string> = {
+const categoryColorMap = {
     [Category.Groceries]: 'bg-green-100 text-green-800',
     [Category.Utilities]: 'bg-blue-100 text-blue-800',
     [Category.Entertainment]: 'bg-purple-100 text-purple-800',
@@ -16,7 +10,7 @@ const categoryColorMap: Record<Category, string> = {
     [Category.Other]: 'bg-slate-100 text-slate-800',
 };
 
-const ExpenseItem: React.FC<ExpenseItemProps> = ({ expense, onDelete }) => {
+const ExpenseItem = ({ expense, onDelete }) => {
     const formattedAmount = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'INR',
@@ -27,7 +21,6 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expense, onDelete }) => {
         month: 'short',
         day: 'numeric',
     });
-
 
     return (
         <tr>
