@@ -13,16 +13,13 @@ public class Expense {
 
     private String description;
     private Double amount;
-
-    @Enumerated(EnumType.STRING)
-    private Category category;
-
+    private String category;
     private LocalDate date;
 
     // Constructors
     public Expense() {}
 
-    public Expense(String description, Double amount, Category category, LocalDate date) {
+    public Expense(String description, Double amount, String category, LocalDate date) {
         this.description = description;
         this.amount = amount;
         this.category = category;
@@ -39,8 +36,8 @@ public class Expense {
     public Double getAmount() { return amount; }
     public void setAmount(Double amount) { this.amount = amount; }
 
-    public Category getCategory() { return category; }
-    public void setCategory(Category category) { this.category = category; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
     public LocalDate getDate() { return date; }
     public void setDate(LocalDate date) { this.date = date; }
