@@ -29,8 +29,7 @@ const App = () => {
 
                 // ✅ Convert server-side category values to frontend ones
                 const mappedData = data.map(exp => ({
-                    ...exp,
-                    category: mapServerToCategory(exp.category),
+                    ...exp
                 }));
 
                 setExpenses(mappedData); // ✅ use mappedData only
@@ -44,41 +43,6 @@ const App = () => {
         fetchExpenses();
     }, []);
 
-    const mapServerToCategory = (serverCategory) => {
-    if (!serverCategory) return Category.Other;
-    const cat = serverCategory.trim().toUpperCase();
-    switch (cat) {
-        case 'GROCERIES':
-        case 'FOOD':
-            return Category.Groceries;
-        case 'TRANSPORT':
-        case 'TRAVEL':
-            return Category.Transport;
-        case 'UTILITIES':
-            return Category.Utilities;
-        case 'ENTERTAINMENT':
-            return Category.Entertainment;
-        case 'HEALTH':
-            return Category.Health;
-        case 'OTHER':
-        default:
-            return Category.Other;
-    }
-};
-
-
-    const mapCategoryToServer = (category) => {
-    switch (category) {
-        case 'Groceries': return 'FOOD';
-        case 'Transport': return 'TRAVEL';
-        case 'Utilities': return 'UTILITIES';
-        case 'Entertainment': return 'ENTERTAINMENT';
-        case 'Health': return 'HEALTH';
-        case 'Other': return 'OTHER';
-        default: return 'OTHER';
-    }
-};
-
 
     const addExpense = useCallback(async (expense) => {
         try {
@@ -86,18 +50,15 @@ const App = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    ...expense,
-                    category: mapCategoryToServer(expense.category), // frontend -> backend
+                    ...expense
                 }),
             });
             if (!response.ok) throw new Error('Failed to add expense.');
 
             let newExpense = await response.json();
 
-            // ✅ Map backend category to frontend
             newExpense = {
-                ...newExpense,
-                category: mapServerToCategory(newExpense.category),
+                ...newExpense
             };
 
             setExpenses(prev => [newExpense, ...prev]);
