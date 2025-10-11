@@ -4,10 +4,14 @@ import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
 import FilterControls from './components/FilterControls';
 import Summary from './components/Summary';
+import Login from './components/Login';
+import Register from './components/Register';
 
 const API_URL = 'http://localhost:8080/api/expenses';
 
 const App = () => {
+    const [user, setUser] = useState(null);
+    const [showRegister, setShowRegister] = useState(false);
     const [expenses, setExpenses] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [apiError, setApiError] = useState(null);
@@ -16,7 +20,19 @@ const App = () => {
     const [filterCategory, setFilterCategory] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'descending' });
 
+    // Check if user is logged in on mount
     useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        } else {
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!user) return;
+
         const fetchExpenses = async () => {
             setIsLoading(true);
             setApiError(null);
@@ -27,12 +43,11 @@ const App = () => {
                 }
                 const data = await response.json();
 
-                // ✅ Convert server-side category values to frontend ones
                 const mappedData = data.map(exp => ({
                     ...exp
                 }));
 
-                setExpenses(mappedData); // ✅ use mappedData only
+                setExpenses(mappedData);
             } catch (err) {
                 setApiError(err.message || 'Failed to fetch expenses. Make sure the API server is running.');
             } finally {
@@ -41,8 +56,22 @@ const App = () => {
         };
 
         fetchExpenses();
-    }, []);
+    }, [user]);
 
+    const handleLoginSuccess = (userData) => {
+        setUser(userData);
+    };
+
+    const handleRegisterSuccess = (userData) => {
+        setUser(userData);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        setUser(null);
+        setExpenses([]);
+        setShowRegister(false);
+    };
 
     const addExpense = useCallback(async (expense) => {
         try {
@@ -67,8 +96,6 @@ const App = () => {
             setApiError('Could not save the new expense. Please try again.');
         }
     }, []);
-
-
 
     const deleteExpense = useCallback(async (id) => {
         try {
@@ -95,10 +122,10 @@ const App = () => {
         }
 
         if (filterCategory) {
-    filtered = filtered.filter(
-        expense => expense.category.toLowerCase() === filterCategory.toLowerCase()
-    );
-}
+            filtered = filtered.filter(
+                expense => expense.category.toLowerCase() === filterCategory.toLowerCase()
+            );
+        }
         
         if (sortConfig.key) {
             filtered.sort((a, b) => {
@@ -118,14 +145,46 @@ const App = () => {
         return filtered;
     }, [expenses, searchTerm, filterCategory, sortConfig]);
 
+    // Show login/register if not authenticated
+    if (!user) {
+        if (showRegister) {
+            return (
+                <Register 
+                    onRegisterSuccess={handleRegisterSuccess}
+                    onSwitchToLogin={() => setShowRegister(false)}
+                />
+            );
+        }
+        return (
+            <Login 
+                onLoginSuccess={handleLoginSuccess}
+                onSwitchToRegister={() => setShowRegister(true)}
+            />
+        );
+    }
+
+    // Main expense tracker UI (when authenticated)
     return (
         <div className="min-h-screen bg-slate-100 font-sans">
             <header className="bg-white shadow-md">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-                    <h1 className="text-3xl font-bold text-slate-800">Expense Tracker</h1>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 8l3 5m0 0l3-5m-3 5v4m-3-5h6m-6 4H6a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v5a2 2 0 01-2 2h-1" />
-                    </svg>
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-3xl font-bold text-slate-800">Expense Tracker</h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 8l3 5m0 0l3-5m-3 5v4m-3-5h6m-6 4H6a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v5a2 2 0 01-2 2h-1" />
+                        </svg>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <span className="text-sm text-slate-600">
+                            Welcome, <span className="font-semibold">{user.username}</span>
+                        </span>
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 text-sm bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-md transition"
+                        >
+                            Logout
+                        </button>
+                    </div>
                 </div>
             </header>
             
